@@ -42,49 +42,81 @@ mvn spring-boot:run
 
 Once the application starts, it will be available on the default port 8080.
 
-API Endpoints
-1. Calculate Monthly Rewards
-   Endpoint: POST /rewards/calculate
-   Description: Calculate monthly rewards for a list of transactions.
-   Request Body: A list of transactions in JSON format.
-   Example request:
+### API Endpoints
+
+Calculate Monthly Rewards
+Endpoint: POST /rewards/calculate
+Description: Calculate monthly and Total rewards points for a list of transactions.
+Request Body: A list of transactions in JSON format.
+  ### Example request:
 
 [
-{
-"customerId": "C001",
-"amountSpent": 120.0,
-"transactionDate": "2025-01-15"
-},
-{
-"customerId": "C001",
-"amountSpent": 75.0,
-"transactionDate": "2025-01-20"
-},
-{
-"customerId": "C002",
-"amountSpent": 95.0,
-"transactionDate": "2025-02-10"
-}
-]
-Response:
-[
-{
-"customerId": "C001",
-"totalPoints": 195,
-"monthlyPoints": {
-"2025-01": 195
-}
-},
-{
-"customerId": "C002",
-"totalPoints": 145,
-"monthlyPoints": {
-"2025-02": 145
-}
-}
+  {
+    "customerId": "C001",
+    "amountSpent": 120,
+    "transactionDate": "2025-01-05"
+  },
+  {
+    "customerId": "C001",
+    "amountSpent": 85,
+    "transactionDate": "2025-01-12"
+  },
+  {
+    "customerId": "C001",
+    "amountSpent": 60,
+    "transactionDate": "2025-04-18"
+  },
+  {
+    "customerId": "C001",
+    "amountSpent": 95,
+    "transactionDate": "2025-04-22"
+  },
+  {
+    "customerId": "C002",
+    "amountSpent": 45,
+    "transactionDate": "2025-02-03"
+  },
+  {
+    "customerId": "C002",
+    "amountSpent": 110,
+    "transactionDate": "2025-05-10"
+  },
+  {
+    "customerId": "C003",
+    "amountSpent": 140,
+    "transactionDate": "2025-02-20"
+  }
 ]
 
-Running Tests
+   ### Response:
+
+[
+    {
+        "customerId": "C002",
+        "totalPoints": 70,
+        "monthlyPoints": {
+            "2025-02": 0,
+            "2025-05": 70
+        }
+    },
+    {
+        "customerId": "C001",
+        "totalPoints": 180,
+        "monthlyPoints": {
+            "2025-01": 125,
+            "2025-04": 55
+        }
+    },
+    {
+        "customerId": "C003",
+        "totalPoints": 130,
+        "monthlyPoints": {
+            "2025-02": 130
+        }
+    }
+]
+
+### Running Tests:
 
 Unit Tests
 Run all unit tests:
