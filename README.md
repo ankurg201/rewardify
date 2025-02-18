@@ -29,8 +29,6 @@ This is a Spring Boot application that processes reward points for customers bas
 ### Installation
 
 1. Clone the repository:
-
-```bash
 git clone https://github.com/your-repo/reward-points-application.git
 
 2. Navigate to the project directory:
@@ -44,4 +42,45 @@ mvn spring-boot:run
 
 Once the application starts, it will be available on the default port 8080.
 
+API Endpoints
+1. Calculate Monthly Rewards
+   Endpoint: POST /rewards/calculate
+   Description: Calculate monthly rewards for a list of transactions.
+   Request Body: A list of transactions in JSON format.
+   Example request:
+
+[
+{
+"customerId": "C001",
+"amountSpent": 120.0,
+"transactionDate": "2025-01-15"
+},
+{
+"customerId": "C001",
+"amountSpent": 75.0,
+"transactionDate": "2025-01-20"
+},
+{
+"customerId": "C002",
+"amountSpent": 95.0,
+"transactionDate": "2025-02-10"
+}
+]
+Response:
+[
+{
+"customerId": "C001",
+"totalPoints": 195,
+"monthlyPoints": {
+"2025-01": 195
+}
+},
+{
+"customerId": "C002",
+"totalPoints": 145,
+"monthlyPoints": {
+"2025-02": 145
+}
+}
+]
 
