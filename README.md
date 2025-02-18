@@ -29,10 +29,10 @@ This is a Spring Boot application that processes reward points for customers bas
 ### Installation
 
 1. Clone the repository:
-git clone https://github.com/your-repo/reward-points-application.git
+git clone https://github.com/ankurg201/rewardify
 
 2. Navigate to the project directory:
-cd reward-points-application
+cd reward
 
 3. Build the project using Maven:
 mvn clean install
@@ -83,4 +83,18 @@ Response:
 }
 }
 ]
+
+Running Tests
+
+Unit Tests
+Run all unit tests:
+
+mvn test
+
+Integration Tests
+Run integration tests:
+
+mvn verify
+
+
 
