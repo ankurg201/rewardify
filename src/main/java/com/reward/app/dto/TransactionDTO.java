@@ -1,11 +1,14 @@
-package com.reward.app;
+package com.reward.app.dto;
 
-public class Transaction {
+public class TransactionDTO {
     private String customerId;
     private double amountSpent;
     private String transactionDate;
 
-    public Transaction(String customerId, double amountSpent, String transactionDate) {
+    public TransactionDTO() {
+    }
+
+    public TransactionDTO(String customerId, double amountSpent, String transactionDate) {
         this.customerId = customerId;
         this.amountSpent = amountSpent;
         this.transactionDate = transactionDate;

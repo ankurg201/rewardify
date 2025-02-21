@@ -1,0 +1,27 @@
+{
+  "rewards": [
+    {
+      "customerId": "C002",
+      "totalPoints": 70,
+      "monthlyPoints": {
+        "2025-02": 0,
+        "2025-05": 70
+      }
+    },
+    {
+      "customerId": "C001",
+      "totalPoints": 180,
+      "monthlyPoints": {
+        "2025-01": 125,
+        "2025-04": 55
+      }
+    },
+    {
+      "customerId": "C003",
+      "totalPoints": 130,
+      "monthlyPoints": {
+        "2025-02": 130
+      }
+    }
+  ]
+}

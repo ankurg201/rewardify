@@ -1,5 +1,7 @@
-package com.reward.app;
+package com.reward.app.service;
 
+import com.reward.app.dto.RewardPointsDTO;
+import com.reward.app.dto.TransactionDTO;
 import com.reward.app.exception.RewardProcessingException;
 import com.reward.app.exception.TransactionNotFoundException;
 import org.springframework.stereotype.Service;
@@ -56,14 +58,14 @@ public class RewardServiceImpl implements RewardService {
      * @throws TransactionNotFoundException if the provided list of transactions is null or empty
      * @throws RewardProcessingException    if a transaction contains invalid data such as missing fields or an invalid date format
      */
-    public List<RewardPointsDTO> getMonthlyRewards(List<Transaction> transactions) {
+    public List<RewardPointsDTO> getMonthlyRewards(List<TransactionDTO> transactions) {
         if (transactions == null || transactions.isEmpty()) {
             throw new TransactionNotFoundException("No transactions found to process rewards.");
         }
 
         Map<String, RewardPointsDTO> tempMap = new HashMap<>();
 
-        for (Transaction item : transactions) {
+        for (TransactionDTO item : transactions) {
             try {
                 // Null checks before processing
                 if (item.getCustomerId() == null || item.getTransactionDate() == null) {
@@ -102,7 +104,6 @@ public class RewardServiceImpl implements RewardService {
                 throw e;
             }
         }
-
         return new ArrayList<>(tempMap.values());
     }
 }

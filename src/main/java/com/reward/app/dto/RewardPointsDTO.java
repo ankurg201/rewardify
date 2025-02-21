@@ -1,4 +1,4 @@
-package com.reward.app;
+package com.reward.app.dto;
 
 import java.util.Map;
 
