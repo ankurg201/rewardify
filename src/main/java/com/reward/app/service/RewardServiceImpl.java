@@ -3,7 +3,6 @@ package com.reward.app.service;
 import com.reward.app.dto.RewardPointsDTO;
 import com.reward.app.dto.TransactionDTO;
 import com.reward.app.exception.RewardProcessingException;
-import com.reward.app.exception.TransactionNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -46,21 +45,19 @@ public class RewardServiceImpl implements RewardService {
     }
 
     /**
-     * Processes a list of transactions and calculates the monthly rewards for each customer.
-     *
+     * Processes a list of transactions and calculates the monthly reward points for each customer.
      * <p>
      * The method iterates through the transactions, calculates the points for each transaction,
-     * and aggregates the results for each customer. It also handles invalid or missing transaction data.
+     * and aggregates the total and monthly reward points per customer.
      * </p>
      *
-     * @param transactions a list of transactions to process
-     * @return a list of RewardPointsDTO objects, each containing the reward details for a customer
-     * @throws TransactionNotFoundException if the provided list of transactions is null or empty
-     * @throws RewardProcessingException    if a transaction contains invalid data such as missing fields or an invalid date format
+     * @param transactions The list of transactions to process.
+     * @return A list of {@link RewardPointsDTO} objects containing the total and monthly reward details per customer.
+     * @throws RewardProcessingException If the provided list is null, empty, or contains invalid transaction data.
      */
     public List<RewardPointsDTO> getMonthlyRewards(List<TransactionDTO> transactions) {
         if (transactions == null || transactions.isEmpty()) {
-            throw new TransactionNotFoundException("No transactions found to process rewards.");
+            throw new RewardProcessingException("No transactions found to process rewards.");
         }
 
         Map<String, RewardPointsDTO> tempMap = new HashMap<>();

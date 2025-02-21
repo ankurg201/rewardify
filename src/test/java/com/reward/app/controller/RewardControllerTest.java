@@ -21,6 +21,13 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Unit test for {@link RewardController}.
+ * <p>
+ * This test verifies the behavior of the reward calculation endpoint by simulating HTTP requests
+ * and mocking the {@link RewardService}.
+ * </p>
+ */
 @WebMvcTest(RewardController.class)
 class RewardControllerTest {
 
@@ -36,6 +43,15 @@ class RewardControllerTest {
     private RewardCalculationRequest request;
     private RewardCalculationResponse expectedResponse;
 
+    /**
+     * Initializes test data before each test case execution.
+     * <p>
+     * Loads sample request and expected response data from JSON files
+     * and mocks the {@link RewardService} behavior.
+     * </p>
+     *
+     * @throws Exception if file reading or object mapping fails
+     */
     @BeforeEach
     void setUp() throws Exception {
         // Load request from JSON file
@@ -50,6 +66,15 @@ class RewardControllerTest {
         when(rewardService.getMonthlyRewards(any())).thenReturn(expectedResponse.getRewards());
     }
 
+    /**
+     * Tests the {@code /rewards/calculate} endpoint.
+     * <p>
+     * This test verifies that when a valid request is sent, the service processes the data
+     * correctly and returns the expected JSON response.
+     * </p>
+     *
+     * @throws Exception if the request execution fails
+     */
     @Test
     void testCalculatePoints() throws Exception {
         mockMvc.perform(post("/rewards/calculate")
@@ -62,7 +87,13 @@ class RewardControllerTest {
         verify(rewardService, times(1)).getMonthlyRewards(any());
     }
 
-    // ✅ Register a mock bean in Spring Boot 3.2+
+    /**
+     * Test configuration class for registering mock beans in the Spring test context.
+     * <p>
+     * Required for Spring Boot 3.2+ to properly inject mock {@link RewardService} beans
+     * during unit tests.
+     * </p>
+     */
     @TestConfiguration
     static class RewardServiceTestConfig {
         @Bean

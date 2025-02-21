@@ -8,17 +8,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Global exception handler for handling application-wide exceptions.
+ * <p>
+ * This class provides centralized exception handling for controllers by capturing
+ * specific and generic exceptions and returning appropriate error responses.
+ * </p>
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(TransactionNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleTransactionNotFoundException(TransactionNotFoundException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", "Transaction Not Found");
-        errorResponse.put("message", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
-
+    /**
+     * Handles {@link RewardProcessingException} and returns a structured error response.
+     *
+     * @param ex the {@link RewardProcessingException} thrown during reward processing
+     * @return a {@link ResponseEntity} containing an error message and HTTP status {@code BAD_REQUEST}
+     */
     @ExceptionHandler(RewardProcessingException.class)
     public ResponseEntity<Map<String, String>> handleRewardProcessingException(RewardProcessingException ex) {
         Map<String, String> errorResponse = new HashMap<>();
@@ -27,6 +32,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles generic {@link Exception} and returns a structured error response.
+     * <p>
+     * This method catches any unhandled exceptions and returns an internal server error response.
+     * </p>
+     *
+     * @param ex the {@link Exception} thrown during request processing
+     * @return a {@link ResponseEntity} containing an error message and HTTP status {@code INTERNAL_SERVER_ERROR}
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
         Map<String, String> errorResponse = new HashMap<>();

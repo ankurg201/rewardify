@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Controller class to handle requests related to rewards processing.
- * Provides endpoints for calculating rewards based on transactions.
+ * REST Controller for handling reward-related operations.
+ * <p>
+ * This controller provides endpoints to process customer transactions and compute
+ * reward points based on predefined business rules.
+ * </p>
  */
 @RestController
 @RequestMapping("/rewards")
@@ -22,21 +25,25 @@ class RewardController {
     private final RewardService rewardService;
 
     /**
-     * Constructor to inject the RewardService.
+     * Constructs a new {@code RewardController} and injects the required {@link RewardService}.
      *
-     * @param rewardService the service that handles reward points calculations
+     * @param rewardService the service responsible for reward points calculation
      */
     RewardController(RewardService rewardService) {
         this.rewardService = rewardService;
     }
 
     /**
-     * Endpoint to calculate monthly rewards based on the list of transactions.
-     * It processes each transaction, calculates points, and returns the reward points for each customer.
+     * Calculates monthly reward points based on customer transactions.
+     * <p>
+     * This endpoint processes a list of transactions, computes the reward points for each customer,
+     * and returns the total and monthly breakdown of reward points.
+     * </p>
      *
-     * @param request the list of transactions that need to be processed
-     * @return a list of RewardPointsDTO containing the total and monthly reward points for each customer
-     * @throws RewardProcessingException if an error occurs while processing the transactions
+     * @param request The request object containing the list of transactions to process.
+     * @return A {@link ResponseEntity} containing {@link RewardCalculationResponse},
+     * which includes reward details for each customer.
+     * @throws RewardProcessingException If an error occurs while processing the transactions.
      */
     @PostMapping("/calculate")
     public ResponseEntity<RewardCalculationResponse> calculateRewards(
