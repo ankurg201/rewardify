@@ -63,7 +63,7 @@ class RewardControllerTest {
         expectedResponse = objectMapper.readValue(responseJson, RewardCalculationResponse.class);
 
         // Mock service response
-        when(rewardService.getMonthlyRewards(any())).thenReturn(expectedResponse.getRewards());
+        when(rewardService.getMonthlyRewards(any())).thenReturn(expectedResponse.getReward());
     }
 
     /**

@@ -1,21 +1,16 @@
 package com.reward.app.controller;
 
-import com.reward.app.dto.RewardPointsDTO;
-import com.reward.app.dto.TransactionDTO;
 import com.reward.app.exception.RewardProcessingException;
-import com.reward.app.request.RewardCalculationRequest;
 import com.reward.app.response.RewardCalculationResponse;
 import com.reward.app.service.RewardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
- * REST Controller for handling reward-related operations.
+ * REST Controller for handling customer reward calculations.
  * <p>
- * This controller provides endpoints to process customer transactions and compute
- * reward points based on predefined business rules.
+ * This controller provides an endpoint to compute reward points for a given customer,
+ * based on their transactions over the last three months.
  * </p>
  */
 @RestController
@@ -27,30 +22,30 @@ class RewardController {
     /**
      * Constructs a new {@code RewardController} and injects the required {@link RewardService}.
      *
-     * @param rewardService the service responsible for reward points calculation
+     * @param rewardService the service responsible for computing reward points
      */
     RewardController(RewardService rewardService) {
         this.rewardService = rewardService;
     }
 
     /**
-     * Calculates monthly reward points based on customer transactions.
+     * Calculates monthly and total reward points for a given customer.
      * <p>
-     * This endpoint processes a list of transactions, computes the reward points for each customer,
-     * and returns the total and monthly breakdown of reward points.
+     * This endpoint retrieves the customer's transactions for the last three months,
+     * computes their reward points, and returns the monthly breakdown along with the total points.
      * </p>
      *
-     * @param request The request object containing the list of transactions to process.
-     * @return A {@link ResponseEntity} containing {@link RewardCalculationResponse},
-     * which includes reward details for each customer.
-     * @throws RewardProcessingException If an error occurs while processing the transactions.
+     * @param customerId the unique identifier of the customer whose rewards are to be calculated
+     * @return a {@link ResponseEntity} containing {@link RewardCalculationResponse},
+     * which includes the total and monthly reward details
+     * @throws RewardProcessingException if an error occurs while processing the customer's transactions
      */
-    @PostMapping("/calculate")
+    @GetMapping("/calculate/{customerId}")
     public ResponseEntity<RewardCalculationResponse> calculateRewards(
-            @RequestBody RewardCalculationRequest request) {
+            @PathVariable String customerId) {
 
         return ResponseEntity.ok(
-                new RewardCalculationResponse(rewardService.getMonthlyRewards(request.getTransactions()))
+                new RewardCalculationResponse(rewardService.getMonthlyRewards(customerId))
         );
     }
 }

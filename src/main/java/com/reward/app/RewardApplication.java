@@ -1,5 +1,7 @@
 package com.reward.app;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,7 +14,10 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @ComponentScan(basePackages = "com.reward.app")
-public class RewardApplication {
+public class RewardApplication implements CommandLineRunner {
+
+	@Autowired
+	private JsonDataLoader jsonDataLoader;
 
 	/**
 	 * Main method to launch the Spring Boot application.
@@ -21,5 +26,10 @@ public class RewardApplication {
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(RewardApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		jsonDataLoader.loadJsonData(); // Load JSON on startup
 	}
 }

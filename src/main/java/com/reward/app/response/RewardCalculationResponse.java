@@ -2,23 +2,21 @@ package com.reward.app.response;
 
 import com.reward.app.dto.RewardPointsDTO;
 
-import java.util.List;
-
 public class RewardCalculationResponse {
-    private List<RewardPointsDTO> rewards;
+    private RewardPointsDTO reward;
 
     public RewardCalculationResponse() {
     }
 
-    public RewardCalculationResponse(List<RewardPointsDTO> rewards) {
-        this.rewards = rewards;
+    public RewardCalculationResponse(RewardPointsDTO reward) {
+        this.reward = reward;
     }
 
-    public List<RewardPointsDTO> getRewards() {
-        return rewards;
+    public RewardPointsDTO getReward() {
+        return reward;
     }
 
-    public void setRewards(List<RewardPointsDTO> rewards) {
-        this.rewards = rewards;
+    public void setRewards(RewardPointsDTO reward) {
+        this.reward = reward;
     }
 }

@@ -1,3 +1,4 @@
+/*
 package com.reward.app.request;
 
 import com.reward.app.dto.TransactionDTO;
@@ -22,3 +23,4 @@ public class RewardCalculationRequest {
         this.transactions = transactions;
     }
 }
+*/

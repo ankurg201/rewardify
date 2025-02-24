@@ -1,3 +1,4 @@
+/*
 package com.reward.app.dto;
 
 public class TransactionDTO {
@@ -39,3 +40,4 @@ public class TransactionDTO {
     }
 }
 
+*/

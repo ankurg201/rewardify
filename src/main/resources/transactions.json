@@ -1,0 +1,72 @@
+[
+    {
+      "customerId": "C001",
+      "amountSpent": 120,
+      "transactionDate": "2025-01-05"
+    },
+    {
+      "customerId": "C001",
+      "amountSpent": 85,
+      "transactionDate": "2025-01-12"
+    },
+    {
+      "customerId": "C001",
+      "amountSpent": 60,
+      "transactionDate": "2025-02-18"
+    },
+    {
+      "customerId": "C001",
+      "amountSpent": 95,
+      "transactionDate": "2024-12-22"
+    },
+  {
+    "customerId": "C001",
+    "amountSpent": 325,
+    "transactionDate": "2024-11-30"
+  },
+  {
+    "customerId": "C001",
+    "amountSpent": 85,
+    "transactionDate": "2024-01-12"
+  },
+  {
+    "customerId": "C001",
+    "amountSpent": 205,
+    "transactionDate": "2023-05-10"
+  },
+    {
+      "customerId": "C002",
+      "amountSpent": 45,
+      "transactionDate": "2025-02-03"
+    },
+    {
+      "customerId": "C002",
+      "amountSpent": 110,
+      "transactionDate": "2025-05-10"
+    },
+    {
+      "customerId": "C003",
+      "amountSpent": 140,
+      "transactionDate": "2025-02-20"
+    },
+  {
+    "customerId": "C004",
+    "amountSpent": 90,
+    "transactionDate": "2025-02-20"
+  },
+  {
+    "customerId": "C004",
+    "amountSpent": 135,
+    "transactionDate": "2025-02-20"
+  },
+  {
+    "customerId": "C005",
+    "amountSpent": 140,
+    "transactionDate": "2025-02-20"
+  },
+  {
+    "customerId": "C003",
+    "amountSpent": 140,
+    "transactionDate": "2025-02-20"
+  }
+  ]
