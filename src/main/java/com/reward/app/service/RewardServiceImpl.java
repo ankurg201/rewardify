@@ -5,6 +5,8 @@ import com.reward.app.exception.RewardProcessingException;
 import com.reward.app.model.Transaction;
 import com.reward.app.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -46,7 +48,7 @@ public class RewardServiceImpl implements RewardService {
      */
     private int calculatePoints(double amountSpent) {
         if (amountSpent < 0) {
-            throw new RewardProcessingException("Amount spent cannot be negative: " + amountSpent);
+            throw new RewardProcessingException("Invalid data: Amount spent cannot be negative: " + amountSpent, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return (amountSpent > 100 ? 2 * ((int) amountSpent - 100) : 0) +
                 (amountSpent > 50 ? ((int) Math.min(amountSpent, 100) - 50) : 0);
@@ -66,11 +68,12 @@ public class RewardServiceImpl implements RewardService {
      */
     @Override
     public RewardPointsDTO getMonthlyRewards(String customerId) {
+        System.out.println("Service method called with customerId: " + customerId);
 
         // Fetch transactions and handle if empty
         List<Transaction> transactions = Optional.ofNullable(fetchRecentTransactions(customerId))
                 .filter(list -> !list.isEmpty())
-                .orElseThrow(() -> new RewardProcessingException("No transactions found for customer: " + customerId));
+                .orElseThrow(() -> new RewardProcessingException("No transactions found", HttpStatus.NOT_FOUND));
 
         // Process transactions and calculate points
         Map<String, Integer> monthlyPoints = transactions.stream()
@@ -97,6 +100,10 @@ public class RewardServiceImpl implements RewardService {
      */
     private List<Transaction> fetchRecentTransactions(String customerId) {
         LocalDate threeMonthsAgo = LocalDate.now().minusMonths(3);
-        return transactionRepository.findByCustomerIdAndTransactionDateAfter(customerId, threeMonthsAgo);
+        try {
+            return transactionRepository.findByCustomerIdAndTransactionDateAfter(customerId, threeMonthsAgo);
+        } catch (DataAccessException ex) {
+            throw new RewardProcessingException("Database unavailable", HttpStatus.SERVICE_UNAVAILABLE);
+        }
     }
 }

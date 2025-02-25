@@ -6,33 +6,18 @@
     },
     {
       "customerId": "C001",
-      "amountSpent": 85,
-      "transactionDate": "2025-01-12"
-    },
-    {
-      "customerId": "C001",
-      "amountSpent": 60,
-      "transactionDate": "2025-02-18"
-    },
-    {
-      "customerId": "C001",
       "amountSpent": 95,
       "transactionDate": "2024-12-22"
     },
   {
     "customerId": "C001",
-    "amountSpent": 325,
-    "transactionDate": "2024-11-30"
-  },
-  {
-    "customerId": "C001",
     "amountSpent": 85,
-    "transactionDate": "2024-01-12"
+    "transactionDate": "2024-05-12"
   },
   {
     "customerId": "C001",
-    "amountSpent": 205,
-    "transactionDate": "2023-05-10"
+    "amountSpent": 30,
+    "transactionDate": "2025-01-06"
   },
     {
       "customerId": "C002",

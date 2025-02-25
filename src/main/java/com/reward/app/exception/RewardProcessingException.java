@@ -1,5 +1,7 @@
 package com.reward.app.exception;
 
+import org.springframework.http.HttpStatus;
+
 /**
  * Custom exception class for handling errors related to reward processing.
  * <p>
@@ -8,22 +10,20 @@ package com.reward.app.exception;
  * </p>
  */
 public class RewardProcessingException extends RuntimeException {
-    /**
-     * Constructs a new {@code RewardProcessingException} with the specified detail message.
-     *
-     * @param message the detail message describing the reason for the exception
-     */
-    public RewardProcessingException(String message) {
-        super(message);
+
+    private final HttpStatus status; // Store status dynamically
+
+    public RewardProcessingException(String message, HttpStatus status) {
+        super(message == null || message.trim().isEmpty() ? "Reward processing error occurred" : message);
+        this.status = status != null ? status : HttpStatus.BAD_REQUEST; // Default to 400 if null
     }
 
-    /**
-     * Constructs a new {@code RewardProcessingException} with the specified detail message and cause.
-     *
-     * @param message the detail message describing the reason for the exception
-     * @param cause   the underlying cause of the exception
-     */
-    public RewardProcessingException(String message, Throwable cause) {
-        super(message, cause);
+    public RewardProcessingException(String message, Throwable cause, HttpStatus status) {
+        super(message == null || message.trim().isEmpty() ? "Reward processing error occurred" : message, cause);
+        this.status = status != null ? status : HttpStatus.BAD_REQUEST; // Default to 400 if null
+    }
+
+    public HttpStatus getStatus() {
+        return status;
     }
 }

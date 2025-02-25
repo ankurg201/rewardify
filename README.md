@@ -51,70 +51,50 @@ Request Body: A list of transactions in JSON format.
   ### Example request:
 
 [
-  {
-    "customerId": "C001",
-    "amountSpent": 120,
-    "transactionDate": "2025-01-05"
-  },
-  {
-    "customerId": "C001",
-    "amountSpent": 85,
-    "transactionDate": "2025-01-12"
-  },
-  {
-    "customerId": "C001",
-    "amountSpent": 60,
-    "transactionDate": "2025-04-18"
-  },
-  {
-    "customerId": "C001",
-    "amountSpent": 95,
-    "transactionDate": "2025-04-22"
-  },
-  {
-    "customerId": "C002",
-    "amountSpent": 45,
-    "transactionDate": "2025-02-03"
-  },
-  {
-    "customerId": "C002",
-    "amountSpent": 110,
-    "transactionDate": "2025-05-10"
-  },
-  {
-    "customerId": "C003",
-    "amountSpent": 140,
-    "transactionDate": "2025-02-20"
-  }
+{
+"customerId": "C001",
+"amountSpent": 120,
+"transactionDate": "2025-01-05"
+},
+{
+"customerId": "C001",
+"amountSpent": 95,
+"transactionDate": "2024-12-22"
+},
+{
+"customerId": "C001",
+"amountSpent": 85,
+"transactionDate": "2024-05-12"
+},
+{
+"customerId": "C001",
+"amountSpent": 30,
+"transactionDate": "2025-01-06"
+},
+{
+"customerId": "C002",
+"amountSpent": 45,
+"transactionDate": "2025-02-03"
+},
+{
+"customerId": "C002",
+"amountSpent": 110,
+"transactionDate": "2025-05-10"
+}
 ]
 
    ### Response:
 
-[
-    {
-        "customerId": "C002",
-        "totalPoints": 70,
-        "monthlyPoints": {
-            "2025-02": 0,
-            "2025-05": 70
-        }
-    },
-    {
+{
+    "reward": {
         "customerId": "C001",
-        "totalPoints": 180,
+        "totalPoints": 135,
         "monthlyPoints": {
-            "2025-01": 125,
-            "2025-04": 55
-        }
-    },
-    {
-        "customerId": "C003",
-        "totalPoints": 130,
-        "monthlyPoints": {
-            "2025-02": 130
+            "2025-01": 90,
+            "2024-12": 45
         }
     }
-]
+}
 
 ### Running Tests:
 

@@ -1,26 +1,26 @@
 package com.reward.app.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.reward.app.request.RewardCalculationRequest;
+import com.reward.app.JsonDataLoader;
+import com.reward.app.dto.RewardPointsDTO;
+import com.reward.app.exception.RewardProcessingException;
 import com.reward.app.response.RewardCalculationResponse;
 import com.reward.app.service.RewardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 /**
  * Unit test for {@link RewardController}.
  * <p>
@@ -34,71 +34,83 @@ class RewardControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
+    @MockBean
+    private JsonDataLoader jsonDataLoader; // Prevents real execution
+
+    @MockBean
     private RewardService rewardService;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    private RewardCalculationRequest request;
     private RewardCalculationResponse expectedResponse;
 
-    /**
-     * Initializes test data before each test case execution.
-     * <p>
-     * Loads sample request and expected response data from JSON files
-     * and mocks the {@link RewardService} behavior.
-     * </p>
-     *
-     * @throws Exception if file reading or object mapping fails
-     */
     @BeforeEach
-    void setUp() throws Exception {
-        // Load request from JSON file
-        String requestJson = new String(Files.readAllBytes(Paths.get("src/test/resources/json/request.json")));
-        request = objectMapper.readValue(requestJson, RewardCalculationRequest.class);
+    void setUp() {
+        // Create mock RewardPointsDTO
+        RewardPointsDTO rewardPointsDTO = new RewardPointsDTO("C001", 150,
+                Map.of("January", 50, "February", 60, "March", 40));
 
-        // Load expected response from JSON file
-        String responseJson = new String(Files.readAllBytes(Paths.get("src/test/resources/json/expected-response.json")));
-        expectedResponse = objectMapper.readValue(responseJson, RewardCalculationResponse.class);
+        // Wrap in RewardCalculationResponse
+        expectedResponse = new RewardCalculationResponse(rewardPointsDTO);
 
-        // Mock service response
-        when(rewardService.getMonthlyRewards(any())).thenReturn(expectedResponse.getReward());
+        when(rewardService.getMonthlyRewards("C001")).thenReturn(expectedResponse.getReward());
     }
 
     /**
-     * Tests the {@code /rewards/calculate} endpoint.
-     * <p>
-     * This test verifies that when a valid request is sent, the service processes the data
-     * correctly and returns the expected JSON response.
-     * </p>
-     *
-     * @throws Exception if the request execution fails
+     * Tests the endpoint with a valid customer ID.
      */
     @Test
-    void testCalculatePoints() throws Exception {
-        mockMvc.perform(post("/rewards/calculate")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+    void testCalculateRewards_ValidCustomer() throws Exception {
+        mockMvc.perform(get("/rewards/calculate/C001")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(expectedResponse)));
 
-        verify(rewardService, times(1)).getMonthlyRewards(any());
+        verify(rewardService, times(1)).getMonthlyRewards("C001");
     }
 
     /**
-     * Test configuration class for registering mock beans in the Spring test context.
-     * <p>
-     * Required for Spring Boot 3.2+ to properly inject mock {@link RewardService} beans
-     * during unit tests.
-     * </p>
+     * Tests the endpoint with a missing customer ID.
      */
-    @TestConfiguration
-    static class RewardServiceTestConfig {
-        @Bean
-        public RewardService rewardService() {
-            return mock(RewardService.class);
-        }
+    @Test
+    void testCalculateRewards_MissingCustomerId() throws Exception {
+        mockMvc.perform(get("/rewards/calculate/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError()) // Missing PathVariable
+                .andExpect(jsonPath("$.error").value("Internal Server Error"));
+
+        verify(rewardService, never()).getMonthlyRewards(anyString());
+    }
+
+    /**
+     * Tests when customer ID is invalid (empty).
+     */
+    @Test
+    void testCalculateRewards_InvalidCustomerId() throws Exception {
+        mockMvc.perform(get("/rewards/calculate/ ")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Reward Processing Error"))
+                .andExpect(jsonPath("$.message").value("Customer ID cannot be null or empty"));
+
+        verify(rewardService, never()).getMonthlyRewards(anyString());
+    }
+
+    /**
+     * Tests when the service throws an exception.
+     */
+    @Test
+    void testCalculateRewards_ServiceException() throws Exception {
+        when(rewardService.getMonthlyRewards("C002"))
+                .thenThrow(new RuntimeException("Unexpected Error"));
+
+        mockMvc.perform(get("/rewards/calculate/C002")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.error").value("Reward Processing Error"))
+                .andExpect(jsonPath("$.message").value("Internal Server Error"));
+        verify(rewardService, times(1)).getMonthlyRewards("C002");
     }
 }
