@@ -2,7 +2,7 @@
 A Reward Points Calculation System
 # Reward Points Calculation Application
 
-This is a Spring Boot application that processes reward points for customers based on their transactions. The application calculates reward points based on the amount spent, categorizes them by month, and returns monthly reward details for each customer.
+This is a Spring Boot application that processes reward points for customers based on their recent transactions. The application calculates reward points based on the amount spent, categorizes them by month, and returns monthly reward details for particular customer.
 
 ## Features
 
@@ -12,8 +12,8 @@ This is a Spring Boot application that processes reward points for customers bas
   - Transactions with amounts less than $50 do not earn any reward points.
 
 - **Monthly Rewards Calculation:**  
-  - Rewards are calculated for each customer, grouped by month. Each transaction's points are accumulated for the respective month.
-  - Points for each customer are calculated per month, and total points are provided.
+  - Rewards are calculated for particular customer, grouped by month. Each transaction's points are accumulated for the respective month.
+  - Points for customer are calculated per month, and total points are provided.
 
 - **Exception Handling:**  
   - The application handles exceptions such as invalid date formats, missing data in transactions, and empty transaction lists.
@@ -45,43 +45,8 @@ Once the application starts, it will be available on the default port 8080.
 ### API Endpoints
 
 Calculate Monthly Rewards
-Endpoint: POST /rewards/calculate
-Description: Calculate monthly and Total rewards points for a list of transactions.
-Request Body: A list of transactions in JSON format.
-  ### Example request:
-
-[
-{
-"customerId": "C001",
-"amountSpent": 120,
-"transactionDate": "2025-01-05"
-},
-{
-"customerId": "C001",
-"amountSpent": 95,
-"transactionDate": "2024-12-22"
-},
-{
-"customerId": "C001",
-"amountSpent": 85,
-"transactionDate": "2024-05-12"
-},
-{
-"customerId": "C001",
-"amountSpent": 30,
-"transactionDate": "2025-01-06"
-},
-{
-"customerId": "C002",
-"amountSpent": 45,
-"transactionDate": "2025-02-03"
-},
-{
-"customerId": "C002",
-"amountSpent": 110,
-"transactionDate": "2025-05-10"
-}
-]
+Endpoint: GET /rewards/calculate/{cutomerId}
+Description: Calculate monthly and Total rewards points for a recent transactions for particular customer. .
 
    ### Response:
 
